@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Care Activities</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #FFFCF7; /* Light background color */
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #738290; /* Darker title color */
+        }
+        .activity-card {
+            margin-bottom: 20px;
+        }
+        .card {
+            background-color: #E4F0D0; /* Light greenish background for cards */
+            border: none; /* Remove border */
+            border-radius: 10px; /* Rounded corners */
+            transition: transform 0.2s; /* Animation on hover */
+        }
+        .card:hover {
+            transform: scale(1.05); /* Slightly enlarge card on hover */
+        }
+        .card-title {
+            color: #A1B5D8; /* Soft blue color for titles */
+        }
+        .btn-primary {
+            background-color: #C2D8B9; /* Soft greenish color for buttons */
+            border-color: #C2D8B9; /* Button border color */
+        }
+        .btn-primary:hover {
+            background-color: #A1B5D8; /* Change button color on hover */
+            border-color: #A1B5D8; /* Border color on hover */
+        }
+        .modal-content {
+            background-color: #E4F0D0; /* Modal background */
+            color: black; /* Text color in modal */
+        }
+        .modal-header, .modal-footer {
+            background-color: #C2D8B9; /* Header and footer background */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Self-Care Activities</h2>
+        <div class="row">
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/meditation.jpg') }}" class="card-img-top" alt="Meditation" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Meditation</h5>
+                        <p class="card-text">A practice to help calm your mind and enhance your overall well-being.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Meditation')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/reading.jpg') }}" class="card-img-top" alt="Reading" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Reading</h5>
+                        <p class="card-text">Reading can be an escape that allows you to explore new worlds.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Reading')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/journaling.jpg') }}" class="card-img-top" alt="Journaling" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Journaling</h5>
+                        <p class="card-text">Writing down your thoughts can be therapeutic and insightful.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Journaling')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/yoga.jpg') }}" class="card-img-top" alt="Yoga" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Yoga</h5>
+                        <p class="card-text">A mind-body practice that combines physical postures, breathing exercises, and meditation.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Yoga')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/walking.jpg') }}" class="card-img-top" alt="Walking" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Walking</h5>
+                        <p class="card-text">A simple way to improve your mood and overall health.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Walking')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/painting.jpg') }}" class="card-img-top" alt="Painting" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Painting</h5>
+                        <p class="card-text">A creative outlet that can help express your feelings and relax your mind.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Painting')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/music.jpg') }}" class="card-img-top" alt="Music" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Listening to Music</h5>
+                        <p class="card-text">Music can uplift your mood and provide relaxation.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Listening to Music')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/gardening.jpg') }}" class="card-img-top" alt="Gardening" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Gardening</h5>
+                        <p class="card-text">Connecting with nature can improve your mental health and provide a sense of accomplishment.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Gardening')">More Info</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 activity-card">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ url_for('static', filename='images/skincare.jpg') }}" class="card-img-top" alt="Skincare" style="border-radius: 10px 10px 0 0;">
+                        <h5 class="card-title">Skincare</h5>
+                        <p class="card-text">Taking care of your skin can boost your confidence and promote relaxation.</p>
+                        <button class="btn btn-primary" onclick="showActivityDetails('Skincare')">More Info</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="activityInfoModal" tabindex="-1" aria-labelledby="activityInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="activityInfoModalLabel">Activity Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalActivityDetails">
+                    <!-- Details will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showActivityDetails(activity) {
+            const activityDescriptions = {
+                "Meditation": {
+                    description: "Meditation helps calm the mind and enhance well-being.",
+                    instructions: "Start with 5-10 minutes daily and gradually increase your time.",
+                    resources: "<a href='https://www.headspace.com/' target='_blank'>Headspace: Meditation App</a>"
+                },
+                "Reading": {
+                    description: "Reading allows exploration of new worlds and ideas.",
+                    instructions: "Set a goal for pages or chapters to read each week.",
+                    resources: "<a href='https://www.goodreads.com/' target='_blank'>Goodreads: Book Recommendations</a>"
+                },
+                "Journaling": {
+                    description: "Writing can be therapeutic and insightful.",
+                    instructions: "Write daily about your thoughts or experiences.",
+                    resources: "<a href='https://www.penzu.com/' target='_blank'>Penzu: Online Journal</a>"
+                },
+                "Yoga": {
+                    description: "A mind-body practice that combines postures and meditation.",
+                    instructions: "Try 20 minutes of yoga each day using online videos.",
+                    resources: "<a href='https://www.yogajournal.com/' target='_blank'>Yoga Journal: Tips and Guides</a>"
+                },
+                "Walking": {
+                    description: "Walking improves mood and overall health.",
+                    instructions: "Aim for 30 minutes a day, and enjoy the outdoors.",
+                    resources: "<a href='https://www.walking.com/' target='_blank'>Walking: Health Benefits</a>"
+                },
+                "Painting": {
+                    description: "A creative outlet for expressing feelings and relaxing.",
+                    instructions: "Try painting or drawing whenever you feel overwhelmed.",
+                    resources: "<a href='https://www.artsy.net/' target='_blank'>Artsy: Explore Artists</a>"
+                },
+                "Listening to Music": {
+                    description: "Music can uplift your mood and promote relaxation.",
+                    instructions: "Create playlists that inspire or soothe you.",
+                    resources: "<a href='https://www.spotify.com/' target='_blank'>Spotify: Music Streaming</a>"
+                },
+                "Gardening": {
+                    description: "Connecting with nature improves mental health.",
+                    instructions: "Start with small plants and observe their growth.",
+                    resources: "<a href='https://www.gardeners.com/' target='_blank'>Gardener's Supply: Tips</a>"
+                },
+                "Skincare": {
+                    description: "Taking care of your skin boosts confidence.",
+                    instructions: "Establish a skincare routine with cleansing and moisturizing.",
+                    resources: "<a href='https://www.dermstore.com/' target='_blank'>Dermstore: Skincare Products</a>"
+                }
+            };
+
+            const details = activityDescriptions[activity];
+            document.getElementById("modalActivityDetails").innerHTML = `
+                <strong>Description:</strong> ${details.description}<br>
+                <strong>Instructions:</strong> ${details.instructions}<br>
+                <strong>Resources:</strong> ${details.resources}
+            `;
+            const modal = new bootstrap.Modal(document.getElementById('activityInfoModal'));
+            modal.show();
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <a href="/" class="btn btn-secondary mt-3">Go Back</a>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Reminders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFCF7; /* Soft beige background */
+            color: #738290; /* Text color */
+            padding: 20px;
+        }
+        h1 {
+            color: #A1B5D8; /* Soft blue for main heading */
+        }
+        h2 {
+            color: #738290; /* Darker tone for subheadings */
+        }
+        .reminder-form {
+            margin-bottom: 20px;
+            background-color: #E4F0D0; /* Light green background for form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-label {
+            color: #738290; /* Label color */
+        }
+        .btn-primary {
+            background-color: #C2D8B9; /* Soft green for buttons */
+            border-color: #C2D8B9;
+        }
+        .btn-primary:hover {
+            background-color: #A1B5D8; /* Hover effect for button */
+            border-color: #A1B5D8;
+        }
+        .reminder-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .reminder-item {
+            background-color: #A1B5D8; /* Blue tone for reminder items */
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #FFFCF7; /* Light text color for contrast */
+        }
+        .reminder-time {
+            font-size: 0.9em;
+            color: #FFFCF7; /* Lighter time display */
+        }
+        .complete-btn {
+            margin-right: 10px;
+            background-color: #E4F0D0; /* Light green button */
+            border: none;
+            color: #738290;
+        }
+        .complete-btn:hover {
+            background-color: #C2D8B9; /* Hover effect */
+        }
+        .completion-message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #A1B5D8; /* Blue message color */
+        }
+        .btn-danger {
+            background-color: #738290; /* Neutral color for clear button */
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #C2D8B9;
+        }
+        .btn-secondary {
+            background-color: #738290;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #C2D8B9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daily Reminders</h1>
+
+    <!-- Form to add a reminder -->
+    <form id="reminderForm" class="reminder-form">
+        <div class="mb-3">
+            <label for="reminderTitle" class="form-label">Task Title:</label>
+            <input type="text" id="reminderTitle" class="form-control" placeholder="Enter your task" required>
+        </div>
+        <div class="mb-3">
+            <label for="reminderTime" class="form-label">Time:</label>
+            <input type="time" id="reminderTime" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Reminder</button>
+    </form>
+
+    <h2>Your Reminders</h2>
+    <ul id="reminderList" class="reminder-list"></ul>
+
+    <button id="clearAllBtn" class="btn btn-danger mt-3">Clear All Reminders</button>
+
+    <!-- Message display area -->
+    <div id="completionMessage" class="completion-message" style="display: none;"></div>
+
+    <script>
+        const reminderForm = document.getElementById('reminderForm');
+        const reminderTitle = document.getElementById('reminderTitle');
+        const reminderTime = document.getElementById('reminderTime');
+        const reminderList = document.getElementById('reminderList');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const completionMessage = document.getElementById('completionMessage');
+
+        // Array of motivational messages
+        const motivationalMessages = [
+            "Great job! Keep it up!",
+            "You're making progress!",
+            "Well done! Every step counts!",
+            "Awesome! You're one step closer!",
+            "Fantastic! Keep pushing forward!"
+        ];
+
+        // Save reminders to localStorage and display them
+        reminderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = reminderTitle.value;
+            const time = reminderTime.value;
+
+            if (title && time) {
+                const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+                reminders.push({ title, time });
+                localStorage.setItem('reminders', JSON.stringify(reminders));
+                displayReminders();
+                reminderTitle.value = '';
+                reminderTime.value = '';
+            }
+        });
+
+        // Display reminders
+        function displayReminders() {
+            const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminderList.innerHTML = reminders.map((reminder, index) => `
+                <li class="reminder-item">
+                    <div>
+                        <strong>${reminder.title}</strong>
+                        <div class="reminder-time">${reminder.time}</div>
+                    </div>
+                    <button class="btn complete-btn" onclick="markComplete(${index})">Complete</button>
+                </li>
+            `).join('');
+        }
+
+        // Mark reminder as complete (remove from list)
+        function markComplete(index) {
+            const reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+            reminders.splice(index, 1); // Remove the completed task
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            displayReminders();
+            showCompletionMessage(); // Show motivational message
+        }
+
+        // Show a random motivational message
+        function showCompletionMessage() {
+            const randomIndex = Math.floor(Math.random() * motivationalMessages.length);
+            completionMessage.textContent = motivationalMessages[randomIndex];
+            completionMessage.style.display = 'block';
+            setTimeout(() => {
+                completionMessage.style.display = 'none';
+            }, 2000); // Hide message after 2 seconds
+        }
+
+        // Clear all reminders
+        clearAllBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all reminders?')) {
+                localStorage.removeItem('reminders');
+                displayReminders();
+            }
+        });
+
+        // Load reminders on page load
+        window.onload = displayReminders;
+    </script>
+    <a href="/" class="btn btn-secondary mt-3">Go Back</a>
+</body>
+</html>

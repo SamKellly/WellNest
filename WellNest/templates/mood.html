@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Journal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #A1B5D8; /* Light lavender background */
+            padding: 20px;
+        }
+        h1 {
+            color: #738290; /* Muted teal heading */
+        }
+        .journal-form {
+            margin-top: 20px;
+        }
+        .journal-entry {
+            margin-top: 10px;
+            background-color: #FFFCF7; /* Off-white for journal entries */
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #C2D8B9; /* Soft green border */
+        }
+        .clear-btn {
+            margin-top: 20px;
+            background-color: #E4F0D0; /* Light green button */
+            color: #738290; /* Muted teal text */
+            border: none; /* No border */
+        }
+        .clear-btn:hover {
+            background-color: #C2D8B9; /* Slightly darker soft green on hover */
+        }
+        .btn-primary {
+            background-color: #C2D8B9; /* Soft green for save button */
+            border: none; /* No border */
+        }
+        .btn-primary:hover {
+            background-color: #E4F0D0; /* Light green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Mood Journal</h1>
+    <p>Write about your day and how you're feeling:</p>
+
+    <!-- Journal entry form -->
+    <form id="journalForm" class="journal-form">
+        <textarea id="journalText" class="form-control" rows="4" placeholder="Write your thoughts here..."></textarea>
+        <button type="submit" class="btn btn-primary mt-3">Save Entry</button>
+    </form>
+
+    <!-- Clear entries button -->
+    <button id="clearEntriesBtn" class="btn btn-danger clear-btn">Clear All Entries</button>
+
+    <h2>Your Past Journal Entries</h2>
+    <div id="journalEntries"></div>
+
+    <script>
+        const journalForm = document.getElementById('journalForm');
+        const journalText = document.getElementById('journalText');
+        const journalEntries = document.getElementById('journalEntries');
+        const clearEntriesBtn = document.getElementById('clearEntriesBtn');
+
+        // Save journal entry to localStorage
+        journalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const entry = journalText.value;
+            if (entry) {
+                const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+                const currentDate = new Date().toLocaleDateString();
+                entries.push({ date: currentDate, text: entry });
+                localStorage.setItem('journalEntries', JSON.stringify(entries));
+                displayJournalEntries();
+                journalText.value = '';
+            }
+        });
+
+        // Clear all journal entries from localStorage
+        clearEntriesBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all journal entries?')) {
+                localStorage.removeItem('journalEntries');
+                displayJournalEntries();
+            }
+        });
+
+        // Display saved journal entries
+        function displayJournalEntries() {
+            const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+            if (entries.length === 0) {
+                journalEntries.innerHTML = '<p>No journal entries found.</p>';
+            } else {
+                journalEntries.innerHTML = entries.map(entry => `
+                    <div class="journal-entry">
+                        <strong>${entry.date}</strong>
+                        <p>${entry.text}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Load entries when page loads
+        window.onload = displayJournalEntries;
+    </script>
+    <a href="/" class="btn btn-secondary mt-3">Go Back</a>
+</body>
+</html>
