@@ -161,7 +161,7 @@ def chat():
     if request.method == 'POST':
         user_input = request.form.get('user_input')
         bot_response = get_bot_response(user_input)
-        return render_template('chat.html', user_input=user_input, bot_response = random.choice(bot_response))
+        return render_template('chat.html', user_input=user_input, bot_response = bot_response)
 
     initial_message = "How are you feeling today? You can type 'happy', 'sad', 'anxious', or 'neutral'."
     return render_template('chat.html', bot_response=initial_message)
